@@ -97,13 +97,22 @@ public class StorageManager implements Listener {
     public void onQuit(PlayerQuitEvent event) {
 
         var scheduler = this.plugin.getInventoryManager().getScheduler();
-        scheduler.runTaskAsynchronously(() -> updatePlayer(event.getPlayer()));
+        scheduler.runTaskAsynchronously(() -> removePlayer(event.getPlayer()));
     }
 
     public void updatePlayer(Player player) {
+        CookiePlayer cookiePlayer = this.plugin.getCookieManager().getCookiePlayer(player);
+        this.updateCookiePlayer(player, cookiePlayer);
+    }
+
+    public void removePlayer(Player player) {
         CookiePlayer cookiePlayer = this.plugin.getCookieManager().removeCookiePlayer(player);
         if (cookiePlayer == null) return;
 
+        this.updateCookiePlayer(player, cookiePlayer);
+    }
+
+    private void updateCookiePlayer(Player player, CookiePlayer cookiePlayer) {
         this.requestHelper.upsert("%prefix%players", table -> {
             table.uuid("unique_id", player.getUniqueId()).primary();
             table.string("username", player.getName());
