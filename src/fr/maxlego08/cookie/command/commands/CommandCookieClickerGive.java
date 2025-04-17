@@ -25,9 +25,10 @@ public class CommandCookieClickerGive extends VCommand {
     protected CommandType perform(CookiePlugin plugin) {
 
         Player player = this.argAsPlayer(0);
-        long amount = this.argAsLong(1);
-        plugin.getCookieManager().addCookie(player, BigDecimal.valueOf(amount));
-        message(player, Message.GIVE, "%player%", player.getName(), "%cookie%", format(amount));
+        BigDecimal amount = new BigDecimal(this.argAsLong(1));
+        var manager = plugin.getCookieManager();
+        manager.addCookie(player, amount);
+        message(player, Message.GIVE, "%player%", player.getName(), "%cookie%", manager.formatNumber(amount));
 
         return CommandType.SUCCESS;
     }
