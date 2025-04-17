@@ -36,8 +36,9 @@ public enum Message {
     RELOAD("§aYou have just reloaded the configuration files."),
 
     DESCRIPTION_RELOAD("Reload configuration files"),
+    DESCRIPTION_GIVE("Give some cookies"),
 
-    ;
+    GIVE("&aYou just give &f%cookie%&a cookies to &f%player%&a.");
 
     private List<String> messages;
     private String message;

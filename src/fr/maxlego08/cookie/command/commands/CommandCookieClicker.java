@@ -11,6 +11,7 @@ public class CommandCookieClicker extends VCommand {
         super(plugin);
         this.setPermission(Permission.ZCOOKIECLICKER_USE);
         this.addSubCommand(new CommandCookieClickerReload(plugin));
+        this.addSubCommand(new CommandCookieClickerGive(plugin));
 		this.onlyPlayers();
     }
 
