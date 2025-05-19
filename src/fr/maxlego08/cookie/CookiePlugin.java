@@ -12,8 +12,8 @@ import fr.maxlego08.cookie.storage.StorageManager;
 import fr.maxlego08.cookie.zcore.ZPlugin;
 import fr.maxlego08.menu.api.ButtonManager;
 import fr.maxlego08.menu.api.InventoryManager;
+import fr.maxlego08.menu.api.loader.NoneLoader;
 import fr.maxlego08.menu.api.pattern.PatternManager;
-import fr.maxlego08.menu.button.loader.NoneLoader;
 
 /**
  * System to create your plugins very simply Projet:

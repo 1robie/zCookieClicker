@@ -4,8 +4,8 @@ import fr.maxlego08.cookie.CookieManager;
 import fr.maxlego08.cookie.CookiePlayer;
 import fr.maxlego08.cookie.CookiePlugin;
 import fr.maxlego08.cookie.CookieUpgrade;
+import fr.maxlego08.menu.api.engine.InventoryEngine;
 import fr.maxlego08.menu.api.utils.Placeholders;
-import fr.maxlego08.menu.inventory.inventories.InventoryDefault;
 import org.bukkit.entity.Player;
 
 import java.math.BigDecimal;
@@ -22,7 +22,7 @@ public class CookieCheckButton extends AbstractCookieButton {
     }
 
     @Override
-    public boolean checkPermission(Player player, InventoryDefault inventory, Placeholders placeholders) {
+    public boolean checkPermission(Player player, InventoryEngine inventory, Placeholders placeholders) {
         if (this.cookieUpgrade == null) return false;
 
         CookieManager manager = this.plugin.getCookieManager();

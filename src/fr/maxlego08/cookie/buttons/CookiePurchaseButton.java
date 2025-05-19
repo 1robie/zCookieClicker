@@ -4,8 +4,8 @@ import fr.maxlego08.cookie.CookieManager;
 import fr.maxlego08.cookie.CookiePlayer;
 import fr.maxlego08.cookie.CookiePlugin;
 import fr.maxlego08.cookie.CookieUpgrade;
+import fr.maxlego08.menu.api.engine.InventoryEngine;
 import fr.maxlego08.menu.api.utils.Placeholders;
-import fr.maxlego08.menu.inventory.inventories.InventoryDefault;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
@@ -18,7 +18,7 @@ public class CookiePurchaseButton extends AbstractCookieButton {
     }
 
     @Override
-    public void onClick(Player player, InventoryClickEvent event, InventoryDefault inventory, int slot, Placeholders placeholders) {
+    public void onClick(Player player, InventoryClickEvent event, InventoryEngine inventory, int slot, Placeholders placeholders) {
 
         CookieManager cookieManager = this.plugin.getCookieManager();
 
@@ -44,7 +44,7 @@ public class CookiePurchaseButton extends AbstractCookieButton {
     }
 
     @Override
-    public boolean checkPermission(Player player, InventoryDefault inventory, Placeholders placeholders) {
+    public boolean checkPermission(Player player, InventoryEngine inventory, Placeholders placeholders) {
         CookieManager cookieManager = this.plugin.getCookieManager();
 
         CookiePlayer cookiePlayer = cookieManager.getCookiePlayer(player);

@@ -6,9 +6,9 @@ import fr.maxlego08.cookie.dto.CookieUpgradeDTO;
 import fr.maxlego08.cookie.placeholder.LocalPlaceholder;
 import fr.maxlego08.cookie.zcore.utils.ZUtils;
 import fr.maxlego08.menu.api.button.Button;
+import fr.maxlego08.menu.api.engine.InventoryEngine;
+import fr.maxlego08.menu.api.exceptions.InventoryException;
 import fr.maxlego08.menu.api.utils.TypedMapAccessor;
-import fr.maxlego08.menu.exceptions.InventoryException;
-import fr.maxlego08.menu.inventory.inventories.InventoryDefault;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -76,7 +76,7 @@ public class CookieManager extends ZUtils implements Listener {
 
     public void startTask() {
         var scheduler = this.plugin.getInventoryManager().getScheduler();
-        scheduler.runTaskTimerAsynchronously(20, 20, () -> {
+        scheduler.runTimerAsync(() -> {
 
             for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
                 if (this.players.containsKey(onlinePlayer.getUniqueId())) {
@@ -85,7 +85,7 @@ public class CookieManager extends ZUtils implements Listener {
                     this.addCookie(onlinePlayer, cps);
                 }
             }
-        });
+        }, 20, 20);
     }
 
     public void loadInventories() {
@@ -159,7 +159,7 @@ public class CookieManager extends ZUtils implements Listener {
 
     public void updateInventory(Player player) {
         Inventory topInventory = player.getOpenInventory().getTopInventory();
-        if (topInventory.getHolder() instanceof InventoryDefault inventoryDefault) {
+        if (topInventory.getHolder() instanceof InventoryEngine inventoryDefault) {
             var spigotInventory = inventoryDefault.getSpigotInventory();
             for (Button button : inventoryDefault.getButtons()) {
                 if (button instanceof CookieButton) {

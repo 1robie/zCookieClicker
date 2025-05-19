@@ -81,7 +81,7 @@ public class StorageManager implements Listener {
     @EventHandler
     public void onConnect(PlayerJoinEvent event) {
         var scheduler = this.plugin.getInventoryManager().getScheduler();
-        scheduler.runTaskAsynchronously(() -> {
+        scheduler.runAsync(w -> {
 
             var cookieDTOS = this.requestHelper.select("%prefix%players", CookiePlayerDTO.class, table -> table.where("unique_id", event.getPlayer().getUniqueId()));
             if (cookieDTOS.isEmpty()) return;
@@ -97,7 +97,7 @@ public class StorageManager implements Listener {
     public void onQuit(PlayerQuitEvent event) {
 
         var scheduler = this.plugin.getInventoryManager().getScheduler();
-        scheduler.runTaskAsynchronously(() -> removePlayer(event.getPlayer()));
+        scheduler.runAsync(w -> removePlayer(event.getPlayer()));
     }
 
     public void updatePlayer(Player player) {
@@ -123,7 +123,7 @@ public class StorageManager implements Listener {
 
     public void upsertUpgrade(UUID uuid, CookieUpgrade cookieUpgrade, BigDecimal amount) {
         var scheduler = this.plugin.getInventoryManager().getScheduler();
-        scheduler.runTaskAsynchronously(() -> this.requestHelper.upsert("%prefix%upgrades", table -> {
+        scheduler.runAsync(w -> this.requestHelper.upsert("%prefix%upgrades", table -> {
             table.uuid("unique_id", uuid).primary();
             table.string("upgrade", cookieUpgrade.name()).primary();
             table.decimal("amount", amount);

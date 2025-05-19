@@ -5,14 +5,14 @@ import fr.maxlego08.cookie.CookiePlayer;
 import fr.maxlego08.cookie.CookiePlugin;
 import fr.maxlego08.cookie.CookieUpgrade;
 import fr.maxlego08.cookie.UpgradeData;
+import fr.maxlego08.menu.api.button.Button;
 import fr.maxlego08.menu.api.utils.Placeholders;
-import fr.maxlego08.menu.button.ZButton;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.math.BigDecimal;
 
-public abstract class AbstractCookieButton extends ZButton {
+public abstract class AbstractCookieButton extends Button {
 
     protected final CookiePlugin plugin;
     protected final CookieUpgrade cookieUpgrade;

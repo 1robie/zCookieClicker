@@ -7,29 +7,14 @@ import fr.maxlego08.menu.api.button.Button;
 import fr.maxlego08.menu.api.button.DefaultButtonValue;
 import fr.maxlego08.menu.api.loader.ButtonLoader;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.Plugin;
 
-public class CookieInfoLoader implements ButtonLoader {
+public class CookieInfoLoader extends ButtonLoader {
 
     private final CookiePlugin plugin;
 
     public CookieInfoLoader(CookiePlugin plugin) {
+        super(plugin, "ZCOOKIECLICKER_INFO");
         this.plugin = plugin;
-    }
-
-    @Override
-    public Class<? extends Button> getButton() {
-        return CookieInfoButton.class;
-    }
-
-    @Override
-    public String getName() {
-        return "ZCOOKIECLICKER_INFO";
-    }
-
-    @Override
-    public Plugin getPlugin() {
-        return this.plugin;
     }
 
     @Override

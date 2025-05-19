@@ -119,10 +119,11 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>com.github.MaxLego08</groupId>
+      <groupId>com.github.Maxlego08</groupId>
       <artifactId>zMenu-API</artifactId>
-      <version>1.0.3.4</version>
-      <scope>provided</scope>
+      <version>1.0.3.7</version>
+      <scope>system</scope>
+      <systemPath>${project.basedir}/libs/zMenu-API-1.1.0.0.jar</systemPath>
     </dependency>
   </dependencies>
   <properties>
