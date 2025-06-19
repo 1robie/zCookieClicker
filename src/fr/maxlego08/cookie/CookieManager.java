@@ -6,9 +6,9 @@ import fr.maxlego08.cookie.dto.CookieUpgradeDTO;
 import fr.maxlego08.cookie.placeholder.LocalPlaceholder;
 import fr.maxlego08.cookie.zcore.utils.ZUtils;
 import fr.maxlego08.menu.api.button.Button;
+import fr.maxlego08.menu.api.engine.InventoryEngine;
+import fr.maxlego08.menu.api.exceptions.InventoryException;
 import fr.maxlego08.menu.api.utils.TypedMapAccessor;
-import fr.maxlego08.menu.exceptions.InventoryException;
-import fr.maxlego08.menu.inventory.inventories.InventoryDefault;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -76,7 +76,7 @@ public class CookieManager extends ZUtils implements Listener {
 
     public void startTask() {
         var scheduler = this.plugin.getInventoryManager().getScheduler();
-        scheduler.runTaskTimerAsynchronously(20, 20, () -> {
+        scheduler.runTimerAsync(() -> {
 
             for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
                 if (this.players.containsKey(onlinePlayer.getUniqueId())) {
@@ -85,10 +85,12 @@ public class CookieManager extends ZUtils implements Listener {
                     this.addCookie(onlinePlayer, cps);
                 }
             }
-        });
+        }, 20, 20);
     }
 
     public void loadInventories() {
+
+        this.loadPatterns();
 
         var inventoryManager = this.plugin.getInventoryManager();
         inventoryManager.deleteInventories(this.plugin);
@@ -114,6 +116,31 @@ public class CookieManager extends ZUtils implements Listener {
         });
     }
 
+    private void loadPatterns() {
+
+        var patternManager = this.plugin.getPatternManager();
+
+        File folder = new File(plugin.getDataFolder(), "patterns");
+        if (!folder.exists()) {
+            folder.mkdirs();
+        }
+
+        var files = List.of("cookie-upgrade");
+        for (String file : files) {
+            if (!new File(folder, file + ".yml").exists()) {
+                this.plugin.saveResource("patterns/" + file + ".yml", false);
+            }
+        }
+
+        files(folder, file -> {
+            try {
+                patternManager.loadPattern(file);
+            } catch (InventoryException exception) {
+                exception.printStackTrace();
+            }
+        });
+    }
+
     public CookiePlayer getCookiePlayer(Player player) {
         return this.players.computeIfAbsent(player.getUniqueId(), e -> new CookiePlayer(plugin));
     }
@@ -132,7 +159,7 @@ public class CookieManager extends ZUtils implements Listener {
 
     public void updateInventory(Player player) {
         Inventory topInventory = player.getOpenInventory().getTopInventory();
-        if (topInventory.getHolder() instanceof InventoryDefault inventoryDefault) {
+        if (topInventory.getHolder() instanceof InventoryEngine inventoryDefault) {
             var spigotInventory = inventoryDefault.getSpigotInventory();
             for (Button button : inventoryDefault.getButtons()) {
                 if (button instanceof CookieButton) {
@@ -144,7 +171,7 @@ public class CookieManager extends ZUtils implements Listener {
 
     public BigDecimal calculatePrice(CookieUpgrade cookieUpgrade, BigDecimal upgradeAmount) {
 
-        BigDecimal price = this.upgrades.getOrDefault(cookieUpgrade, new UpgradeData(BigDecimal.ONE, BigDecimal.ZERO)).cost();
+        BigDecimal price = getUpgrade(cookieUpgrade).cost();
 
         if (upgradeAmount.longValue() < 1) {
             return price;
@@ -165,6 +192,7 @@ public class CookieManager extends ZUtils implements Listener {
 
         CookiePlayer cookiePlayer = new CookiePlayer(this.plugin);
         cookiePlayer.setCookie(dto.cookie());
+        cookiePlayer.setTotalCookie(dto.total_cookie());
 
         for (CookieUpgradeDTO upgradeDTO : upgradeDTOS) {
             cookiePlayer.getUpgrades().put(upgradeDTO.upgrade(), upgradeDTO.amount());
@@ -196,5 +224,13 @@ public class CookieManager extends ZUtils implements Listener {
 
         DecimalFormat currentFormat = new DecimalFormat(decimalFormatPattern);
         return currentFormat.format(scaledValue) + suffixes.get(suffixIndex);
+    }
+
+    public UpgradeData getUpgrade(CookieUpgrade cookieUpgrade) {
+        return this.upgrades.getOrDefault(cookieUpgrade, new UpgradeData(BigDecimal.ONE, BigDecimal.ZERO));
+    }
+
+    public BigDecimal getServerCPS() {
+        return this.players.values().stream().map(CookiePlayer::getCookiePerSeconds).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }

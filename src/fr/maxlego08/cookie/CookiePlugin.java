@@ -2,6 +2,8 @@ package fr.maxlego08.cookie;
 
 import fr.maxlego08.cookie.buttons.CookieButton;
 import fr.maxlego08.cookie.command.commands.CommandCookieClicker;
+import fr.maxlego08.cookie.loader.CookieCheckLoader;
+import fr.maxlego08.cookie.loader.CookieInfoLoader;
 import fr.maxlego08.cookie.loader.CookiePurchaseLoader;
 import fr.maxlego08.cookie.placeholder.LocalPlaceholder;
 import fr.maxlego08.cookie.save.Config;
@@ -10,7 +12,8 @@ import fr.maxlego08.cookie.storage.StorageManager;
 import fr.maxlego08.cookie.zcore.ZPlugin;
 import fr.maxlego08.menu.api.ButtonManager;
 import fr.maxlego08.menu.api.InventoryManager;
-import fr.maxlego08.menu.button.loader.NoneLoader;
+import fr.maxlego08.menu.api.loader.NoneLoader;
+import fr.maxlego08.menu.api.pattern.PatternManager;
 
 /**
  * System to create your plugins very simply Projet:
@@ -24,17 +27,19 @@ public class CookiePlugin extends ZPlugin {
     private CookieManager cookieManager;
     private InventoryManager inventoryManager;
     private ButtonManager buttonManager;
+    private PatternManager patternManager;
 
     @Override
     public void onEnable() {
 
         LocalPlaceholder placeholder = LocalPlaceholder.getInstance();
-        placeholder.setPrefix("zcookiecliker");
+        placeholder.setPrefix("zcookieclicker");
 
         this.preEnable();
 
         this.inventoryManager = getProvider(InventoryManager.class);
         this.buttonManager = getProvider(ButtonManager.class);
+        this.patternManager = getProvider(PatternManager.class);
 
         this.saveDefaultConfig();
         this.cookieManager = new CookieManager(this);
@@ -43,7 +48,7 @@ public class CookiePlugin extends ZPlugin {
         this.loadButtons();
         this.cookieManager.loadInventories();
 
-        this.registerCommand("zcookiecliker", new CommandCookieClicker(this), "cookiecliker", "cookie");
+        this.registerCommand("zcookieclicker", new CommandCookieClicker(this), "cookieclicker", "cookie");
         this.addListener(this.storageManager);
 
         this.addSave(Config.getInstance());
@@ -79,6 +84,8 @@ public class CookiePlugin extends ZPlugin {
     private void loadButtons() {
         this.buttonManager.register(new NoneLoader(this, CookieButton.class, "ZCOOKIECLICKER_COOKIE"));
         this.buttonManager.register(new CookiePurchaseLoader(this));
+        this.buttonManager.register(new CookieCheckLoader(this));
+        this.buttonManager.register(new CookieInfoLoader(this));
     }
 
     public CookieManager getCookieManager() {
@@ -91,6 +98,10 @@ public class CookiePlugin extends ZPlugin {
 
     public ButtonManager getButtonManager() {
         return buttonManager;
+    }
+
+    public PatternManager getPatternManager() {
+        return patternManager;
     }
 
     public StorageManager getStorageManager() {
