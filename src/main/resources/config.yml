@@ -25,7 +25,7 @@
 #
 # SQL is used here solely as a storage system. It cannot be used to synchronize items between different servers.
 sql:
-  type: SQLITE # SQLITE, MYSQL and HIKARI
+  type: SQLITE # SQLITE, MYSQL and MARIADB
   # The username for the SQL database.
   user: homestead
   # The password for the SQL database.
