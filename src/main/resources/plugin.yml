@@ -3,6 +3,7 @@ author: Maxlego08
 main: fr.maxlego08.cookie.CookiePlugin
 website: https://groupez.dev
 description: Cookie Clicker Plugin
-version: 2.0.1
+version: 2.0.2
 api-version: 1.13
-commands:
+libraries:
+  - 'org.mariadb.jdbc:mariadb-java-client:3.5.6'

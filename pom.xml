@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>fr.maxlego08.cookie</groupId>
     <artifactId>zCookieClicker</artifactId>
-    <version>2.0.0</version>
+    <version>2.0.2</version>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>8</maven.compiler.source>
@@ -138,13 +138,13 @@
         <dependency>
             <groupId>fr.maxlego08.menu</groupId>
             <artifactId>zmenu-api</artifactId>
-            <version>1.1.0.0</version>
+            <version>1.1.0.3</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.MaxLego08</groupId>
-            <artifactId>Sarah</artifactId>
-            <version>a2f3a49caa</version>
+            <groupId>fr.maxlego08.sarah</groupId>
+            <artifactId>sarah</artifactId>
+            <version>1.20</version>
         </dependency>
     </dependencies>
 </project>

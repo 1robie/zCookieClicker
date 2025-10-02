@@ -58,8 +58,10 @@ public class StorageManager implements Listener {
         this.databaseConnection = switch (type) {
             case "sqlite" ->
                     new SqliteConnection(new DatabaseConfiguration(prefix, user, password, port, host, dataBase, enableDebug, DatabaseType.SQLITE), plugin.getDataFolder());
-            case "hikari" ->
+            case "hikari", "mysql" ->
                     new HikariDatabaseConnection(new DatabaseConfiguration(prefix, user, password, port, host, dataBase, enableDebug, DatabaseType.MYSQL));
+            case "mariadb" ->
+                    new HikariDatabaseConnection(new DatabaseConfiguration(prefix, user, password, port, host, dataBase, enableDebug, DatabaseType.MARIADB));
             default ->
                     new MySqlConnection(new DatabaseConfiguration(prefix, user, password, port, host, dataBase, enableDebug, DatabaseType.MYSQL));
         };
