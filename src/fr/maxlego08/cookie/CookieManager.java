@@ -163,7 +163,9 @@ public class CookieManager extends ZUtils implements Listener {
             var spigotInventory = inventoryDefault.getSpigotInventory();
             for (Button button : inventoryDefault.getButtons()) {
                 if (button instanceof CookieButton) {
-                    spigotInventory.setItem(button.getSlot(), button.getCustomItemStack(player));
+                    for (int slot : button.getSlots()){
+                        spigotInventory.setItem(slot, button.getCustomItemStack(player));
+                    }
                 }
             }
         }
