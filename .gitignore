@@ -16,6 +16,8 @@ build/
 *.iws
 *.iml
 *.ipr
+discord.xml
+dependency-reduced-pom.xml
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
