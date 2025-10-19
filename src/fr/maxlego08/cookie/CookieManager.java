@@ -1,6 +1,7 @@
 package fr.maxlego08.cookie;
 
 import fr.maxlego08.cookie.buttons.CookieButton;
+import fr.maxlego08.cookie.buttons.CookieCheckButton;
 import fr.maxlego08.cookie.dto.CookiePlayerDTO;
 import fr.maxlego08.cookie.dto.CookieUpgradeDTO;
 import fr.maxlego08.cookie.placeholder.LocalPlaceholder;
@@ -83,7 +84,7 @@ public class CookieManager extends ZUtils implements Listener {
                 if (this.players.containsKey(onlinePlayer.getUniqueId())) {
                     var cookiePlayer = getCookiePlayer(onlinePlayer);
                     var cps = cookiePlayer.getCookiePerSeconds();
-                    this.addCookie(onlinePlayer, cps);
+                    this.addCookie(onlinePlayer, cps,true);
                 }
             }
         }, 20, 20);
@@ -150,15 +151,15 @@ public class CookieManager extends ZUtils implements Listener {
         return upgrades;
     }
 
-    public void addCookie(Player player, BigDecimal decimal) {
+    public void addCookie(Player player, BigDecimal decimal, boolean updateAllUpgrades) {
 
         CookiePlayer cookiePlayer = getCookiePlayer(player);
         cookiePlayer.add(decimal);
 
-        this.updateInventory(player);
+        this.updateInventory(player, updateAllUpgrades);
     }
 
-    public void updateInventory(Player player) {
+    public void updateInventory(Player player, boolean updateAllUpgrades) {
         Inventory topInventory = player.getOpenInventory().getTopInventory();
         if (topInventory.getHolder() instanceof InventoryEngine inventoryDefault) {
             var spigotInventory = inventoryDefault.getSpigotInventory();
@@ -168,6 +169,8 @@ public class CookieManager extends ZUtils implements Listener {
                     for (int slot : button.getSlots()){
                         spigotInventory.setItem(slot, itemStack);
                     }
+                } else if (button instanceof CookieCheckButton && updateAllUpgrades) {
+                    inventoryDefault.buildButton(button.getMasterParentButton());
                 }
             }
         }
