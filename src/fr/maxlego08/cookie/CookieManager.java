@@ -14,6 +14,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -163,8 +164,9 @@ public class CookieManager extends ZUtils implements Listener {
             var spigotInventory = inventoryDefault.getSpigotInventory();
             for (Button button : inventoryDefault.getButtons()) {
                 if (button instanceof CookieButton) {
+                    ItemStack itemStack = button.getCustomItemStack(player);
                     for (int slot : button.getSlots()){
-                        spigotInventory.setItem(slot, button.getCustomItemStack(player));
+                        spigotInventory.setItem(slot, itemStack);
                     }
                 }
             }
